@@ -1,23 +1,35 @@
 import java.util.Scanner;
 
 public class Main {
-	static int C;
+	static long C;
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		int A = sc.nextInt();
-		int B = sc.nextInt();
-		C = sc.nextInt();
+		long A = sc.nextLong();
+		long B = sc.nextLong();
+		C = sc.nextLong();
 		
-		System.out.println(pow(A,B));
+		// (A * B) % C = ((A % C) * (B % C)) % C
+		
+		System.out.println(pow(A, B));
+		
 	}
-	public static long pow(int a, int b) {
-		if(b == 0) return 1;
+	private static long pow(long a, long b) {
 		
-		long tmp = pow(a, b/2);
+		if(b == 0) return 1; 
 		
-		if(b % 2 == 0) return tmp * tmp % C;
+		long tmp = pow(a, b / 2);
 		
-		return (tmp * tmp % C) * a % C;
+		long res = ((tmp % C) * (tmp % C)) % C;
+		
+		if(b % 2 == 0) {
+			return res;
+		} else {
+			return ((res % C) * (a % C)) % C;
+		}
+		
+		
+		
+		
 		
 	}
 }
