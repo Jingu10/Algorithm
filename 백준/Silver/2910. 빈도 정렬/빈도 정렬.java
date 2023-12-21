@@ -32,9 +32,8 @@ public class Main {
 	
 	
 	private static void solve() {
-		for(Map.Entry<Integer, int[]> entry : map.entrySet()) {
-			int key = entry.getKey();
-			int[] value = entry.getValue();
+		for(int key : map.keySet()) {
+			int[] value = map.get(key);
 			Info info = new Info(key, value[0], value[1]);
 			pq.add(info);
 		}
