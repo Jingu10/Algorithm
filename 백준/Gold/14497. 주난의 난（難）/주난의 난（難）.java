@@ -25,50 +25,42 @@ public class Main {
 		while (true) {
 			jump++;
 			if (jump % 2 == 1) {
-				while (!queue1.isEmpty()) {
-					int[] pos = queue1.poll();
-					int row = pos[0];
-					int col = pos[1];
-					for (int d = 0; d < 4; d++) {
-						int nrow = row + dr[d];
-						int ncol = col + dc[d];
-						if (nrow > 0 && ncol > 0 && nrow <= N && ncol <= M && !visited[nrow][ncol]) {
-							visited[nrow][ncol] = true;
-							if (map[nrow][ncol] == '0') {
-								queue1.add(new int[] { nrow, ncol });
-							} else if (map[nrow][ncol] == '1') {
-								queue2.add(new int[] { nrow, ncol });
-								map[nrow][ncol] = 0;
-							} else {
-								return;
-							}
-						}
-					}
+				if (!bfs(queue1, queue2)) {
+					break;
 				}
 			} else {
-				while (!queue2.isEmpty()) {
-					int[] pos = queue2.poll();
-					int row = pos[0];
-					int col = pos[1];
-					for (int d = 0; d < 4; d++) {
-						int nrow = row + dr[d];
-						int ncol = col + dc[d];
-						if (nrow > 0 && ncol > 0 && nrow <= N && ncol <= M && !visited[nrow][ncol]) {
-							visited[nrow][ncol] = true;
-							if (map[nrow][ncol] == '0') {
-								queue2.add(new int[] { nrow, ncol });
-							} else if (map[nrow][ncol] == '1') {
-								queue1.add(new int[] { nrow, ncol });
-								map[nrow][ncol] = 0;
-							} else {
-								return;
-							}
-						}
-					}
+				if( !bfs(queue2, queue1)) {
+					break;
 				}
 			}
 		}
 
+	}
+
+	private static boolean bfs(Queue<int[]> currentQueue, Queue<int[]> nextQueue) {
+		while (!currentQueue.isEmpty()) {
+			int[] pos = currentQueue.poll();
+			int row = pos[0];
+			int col = pos[1];
+
+			for (int d = 0; d < 4; d++) {
+				int nrow = row + dr[d];
+				int ncol = col + dc[d];
+
+				if (nrow > 0 && ncol > 0 && nrow <= N && ncol <= M && !visited[nrow][ncol]) {
+					visited[nrow][ncol] = true;
+					if (map[nrow][ncol] == '0') {
+						currentQueue.add(new int[] { nrow, ncol });
+					} else if (map[nrow][ncol] == '1') {
+						nextQueue.add(new int[] { nrow, ncol });
+						map[nrow][ncol] = '0';
+					} else {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
 	}
 
 	static void init() throws IOException {
